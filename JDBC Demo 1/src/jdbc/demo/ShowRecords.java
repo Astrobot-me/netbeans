@@ -29,7 +29,11 @@ public class ShowRecords extends javax.swing.JFrame {
         try{
             con = DriverManager.getConnection(uri,username,password);
             System.out.println("Database Connected Successfully");
-            pst = con.prepareStatement("select * from students"); 
+            pst = con.prepareStatement(
+                    "select * from students",
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY
+            ); 
             rs = pst.executeQuery();
             
         } catch(SQLException e){
@@ -37,6 +41,7 @@ public class ShowRecords extends javax.swing.JFrame {
         }
         
         initComponents();
+        b2.setEnabled(false);
     }
     
 
@@ -215,15 +220,34 @@ public class ShowRecords extends javax.swing.JFrame {
         try {
              
             
-            rs.next(); 
-            b1.setEnabled(true);
+            if(rs.next()){
             
             j1.setText(rs.getString("name"));
             j2.setText(rs.getString("roll"));
             j3.setText(rs.getString("science"));
             j4.setText(rs.getString("maths"));
             j5.setText(rs.getString("sst"));
+            }else{
+                j1.setText("End of Database Reached");
+                j2.setText("End of Database Reached");
+                j3.setText("End of Database Reached");
+                j4.setText("End of Database Reached");
+                j5.setText("End of Database Reached");
+                rs.beforeFirst();
+                b1.setEnabled(true);
+                
+                
+            }
             
+            
+            
+            //checking if cursor is it at first row
+            if(rs.isFirst()){
+                b3.setEnabled(false);
+                b2.setEnabled(false);
+             }else{
+                b3.setEnabled(true);
+            }
             
         } catch (SQLException e) {
             System.out.println("Exception Occured in Next Record:: "+ e.getMessage());
@@ -233,31 +257,55 @@ public class ShowRecords extends javax.swing.JFrame {
 
     private void b3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b3ActionPerformed
         // TODO add your handling code here:
+        
+        try{
+            
+            if(rs.isFirst()) {
+                b3.setEnabled(false);
+            }
+            
+            else if(rs.previous()){
+                
+                
+                j1.setText(rs.getString("name"));
+                j2.setText(rs.getString("roll"));
+                j3.setText(rs.getString("science"));
+                j4.setText(rs.getString("maths"));
+                j5.setText(rs.getString("sst"));
+                
+                
+                
+            }
+            
+            
+        }catch(SQLException e){
+            System.out.println("Exception Occurred in Previous Record Method :: " + e.getMessage());
+            
+        }
     }//GEN-LAST:event_b3ActionPerformed
 
     private void b4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b4ActionPerformed
         // TODO add your handling code here:
         
         try {
-            PreparedStatement pst2 = con.prepareStatement(
-                    "select * from students",
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY
             
-            ); 
-            ResultSet rs2 = pst2.executeQuery(); 
+            if(rs.isFirst()) {
+                b3.setEnabled(true);
+            }
             
-            rs2.last(); 
+            rs.last(); 
             
-            j1.setText(rs2.getString("name"));
-            j2.setText(rs2.getString("roll"));
-            j3.setText(rs2.getString("science"));
-            j4.setText(rs2.getString("maths"));
-            j5.setText(rs2.getString("sst"));
+            j1.setText(rs.getString("name"));
+            j2.setText(rs.getString("roll"));
+            j3.setText(rs.getString("science"));
+            j4.setText(rs.getString("maths"));
+            j5.setText(rs.getString("sst"));
             
             
+            //if directly jumped to last record
+            b2.setEnabled(true);
         } catch (SQLException e) {
-            System.out.println("Exception Occured :: "+ e.getMessage());
+            System.out.println("Exception Occured in last Record method:: "+ e.getMessage());
                    
         }
     }//GEN-LAST:event_b4ActionPerformed
@@ -268,7 +316,9 @@ public class ShowRecords extends javax.swing.JFrame {
         try {
             
             
-            rs.next(); 
+            
+            if(rs.next()){
+                
             
             j1.setText(rs.getString("name").trim());
             j2.setText(rs.getString("roll"));
@@ -276,7 +326,10 @@ public class ShowRecords extends javax.swing.JFrame {
             j4.setText(rs.getString("maths"));
             j5.setText(rs.getString("sst"));
             
+            //disabling show and enabling next button 
             b1.setEnabled(false);
+            b2.setEnabled(true);
+            }
             
             
         } catch (SQLException e) {
@@ -300,7 +353,12 @@ public class ShowRecords extends javax.swing.JFrame {
             j4.setText("");
             j5.setText("");
             
+            //show form enabled
             b1.setEnabled(true);
+            //next button disbaled
+            b2.setEnabled(false);
+            //Previous Button disabled
+            b3.setEnabled(false);
             
             
         } catch (SQLException e) {
