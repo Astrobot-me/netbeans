@@ -341,7 +341,7 @@ public class Calcdemo extends javax.swing.JFrame {
         
         sum += Integer.parseInt(dig); 
         jTextField1.setText("");
-        jTextField1.setText(String.valueOf(sum)); 
+//        jTextField1.setText(String.valueOf(sum)); 
         
     }//GEN-LAST:event_jButton12ActionPerformed
 
