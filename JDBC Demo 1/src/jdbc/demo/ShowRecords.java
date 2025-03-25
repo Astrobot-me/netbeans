@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package jdbc.demo;
+import java.awt.Color;
 import java.sql.*;
 
 /**
@@ -17,6 +18,7 @@ public class ShowRecords extends javax.swing.JFrame {
     
     Connection con = null; 
     PreparedStatement pst = null; 
+    PreparedStatement insertDelete_pst = null; 
     ResultSet rs = null; 
     public ShowRecords() {
         
@@ -35,6 +37,8 @@ public class ShowRecords extends javax.swing.JFrame {
                     ResultSet.CONCUR_READ_ONLY
             ); 
             rs = pst.executeQuery();
+            
+            
             
         } catch(SQLException e){
             System.out.println("Exception Occured in Database Connection:: "+ e.getMessage());
@@ -70,6 +74,9 @@ public class ShowRecords extends javax.swing.JFrame {
         b3 = new javax.swing.JButton();
         b4 = new javax.swing.JButton();
         b5 = new javax.swing.JButton();
+        insertBtn = new javax.swing.JButton();
+        deleteBtn = new javax.swing.JButton();
+        infoLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,6 +92,12 @@ public class ShowRecords extends javax.swing.JFrame {
         jLabel5.setText("Maths");
 
         jLabel6.setText("SST ");
+
+        j1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j1ActionPerformed(evt);
+            }
+        });
 
         j5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,6 +140,22 @@ public class ShowRecords extends javax.swing.JFrame {
             }
         });
 
+        insertBtn.setText("Insert Record");
+        insertBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insertBtnActionPerformed(evt);
+            }
+        });
+
+        deleteBtn.setText("Delete Record");
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
+
+        infoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -139,54 +168,63 @@ public class ShowRecords extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(b3)
                 .addGap(52, 52, 52))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(50, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(j3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(j2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(j4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(j5, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(67, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(j1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(118, 118, 118)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(j1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(j3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(j2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(j4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(j5, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(89, 89, 89)
-                        .addComponent(b4)
+                        .addGap(78, 78, 78)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(insertBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(b4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(b5)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(b5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(deleteBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(75, 75, 75)
+                        .addComponent(infoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(j1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(j2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(j3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(j3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(j4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -195,16 +233,22 @@ public class ShowRecords extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(j5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addGap(31, 31, 31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(infoLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(b1)
                     .addComponent(b2)
                     .addComponent(b3))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(insertBtn)
+                    .addComponent(deleteBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(b4)
-                    .addComponent(b5))
-                .addContainerGap(12, Short.MAX_VALUE))
+                    .addComponent(b5)
+                    .addComponent(b4))
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -368,6 +412,82 @@ public class ShowRecords extends javax.swing.JFrame {
         
     }//GEN-LAST:event_b5ActionPerformed
 
+    private void j1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_j1ActionPerformed
+
+    private void insertBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertBtnActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+            
+            insertDelete_pst = con.prepareStatement("insert into students values(?,?,?,?,?)");
+            
+            String name =  j1.getText().trim();
+            String roll = j2.getText().trim();
+            String science = j3.getText().trim();
+            String maths = j4.getText().trim();
+            String sst = j5.getText().trim();
+            
+            if(name.length() > 0 && roll.length() > 0 && science.length() > 0 && maths.length() >0 ){
+                insertDelete_pst.setString(1, name);
+                insertDelete_pst.setString(2, roll);
+                insertDelete_pst.setString(3, science);
+                insertDelete_pst.setString(4, maths);
+                insertDelete_pst.setString(5, sst);
+            }
+            
+            if(insertDelete_pst.executeUpdate()> 0) {
+                infoLabel.setForeground(Color.green);
+                infoLabel.setText("Record inserted Successfully");
+            }else{
+                infoLabel.setForeground(Color.red);
+                infoLabel.setText("Record insertion Failed");
+            
+            }
+            
+            
+        } catch (SQLException e) {
+            System.out.println("Exception Occured in Insert Button"+ e.getMessage() );
+        }
+    }//GEN-LAST:event_insertBtnActionPerformed
+
+    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+            
+           String name =  j1.getText().trim();
+           String roll = j2.getText().trim();
+           String science = j3.getText().trim();
+           String maths = j4.getText().trim();
+           String sst = j5.getText().trim();
+            
+            insertDelete_pst = con.prepareStatement("delete from students where name=? and roll=? and science=? and maths=? and sst=?");
+            
+            if(name.length() > 0 && roll.length() > 0 && science.length() > 0 && maths.length() >0 ){
+                insertDelete_pst.setString(1, name);
+                insertDelete_pst.setString(2, roll);
+                insertDelete_pst.setString(3, science);
+                insertDelete_pst.setString(4, maths);
+                insertDelete_pst.setString(5, sst);
+            }
+            
+            if(insertDelete_pst.execute()) {
+                infoLabel.setForeground(Color.green);
+                infoLabel.setText("Record deleted Successfully");
+            }else{
+                infoLabel.setForeground(Color.red);
+                infoLabel.setText("Record deletion Failed");
+            
+            }
+            
+            
+        } catch (SQLException e) {
+            System.out.println("Exception Occured in Insert Button"+ e.getMessage() );
+        }
+    }//GEN-LAST:event_deleteBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -409,6 +529,9 @@ public class ShowRecords extends javax.swing.JFrame {
     private javax.swing.JButton b3;
     private javax.swing.JButton b4;
     private javax.swing.JButton b5;
+    private javax.swing.JButton deleteBtn;
+    private javax.swing.JLabel infoLabel;
+    private javax.swing.JButton insertBtn;
     private javax.swing.JTextField j1;
     private javax.swing.JTextField j2;
     private javax.swing.JTextField j3;
