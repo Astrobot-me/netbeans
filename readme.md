@@ -31,7 +31,7 @@
             </tr>
             <tr>
                 <td>Java Assignment Programs</td>
-                <td><a href="https://github.com/Astrobot-me/netbeans/blob/main/Java% Assignment%Programs" alt="" > Java files</a></td>
+                <td><a href="https://github.com/Astrobot-me/netbeans/tree/main/Java%20Assignment%20Programs" alt="" > Java files</a></td>
                 <td>All Assigned Java Programs</td>
                 <td>20th April 2025</td>
             </tr>
